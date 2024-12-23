@@ -1,0 +1,75 @@
+service: node-crud-api
+
+frameworkVersion: '>=3.0.0 <4.0.0'
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  environment:
+    TABLE_NAME: items
+  region: us-east-1
+
+custom:
+  scripts:
+    hooks:
+      before:deploy:deploy: npm install
+
+functions:
+  mainHandler:
+    handler: handler.mainHandler
+    events:
+      - http:
+          path: items
+          method: post
+          cors:
+            origins:
+              - '*'  # Allow all origins or specify a specific domain like 'https://yourdomain.com'
+            headers:
+              - Content-Type
+            allowCredentials: false  # Set to true if you need cookies or authentication headers in requests
+      - http:
+          path: items
+          method: get
+          cors:
+            origins: true
+      - http:
+          path: items/{id}
+          method: get
+          cors:
+            origins:
+              - '*'
+            headers:
+              - Content-Type
+            allowCredentials: false
+      - http:
+          path: items/{id}
+          method: put
+          cors:
+            origins:
+              - '*'
+            headers:
+              - Content-Type
+            allowCredentials: false
+      - http:
+          path: items/{id}
+          method: delete
+          cors:
+            origins:
+              - '*'
+            headers:
+              - Content-Type
+            allowCredentials: false
+
+resources:
+  Resources:
+    ItemsTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: items
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST

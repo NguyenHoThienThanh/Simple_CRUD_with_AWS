@@ -1,0 +1,14 @@
+{
+  "name": "node-crud-api",
+  "version": "1.0.0",
+  "devDependencies": {
+    "serverless": "^3.0.0",
+    "serverless-plugin-common-excludes": "^4.0.0"
+  },
+  "dependencies": {
+    "aws-sdk": "^2.0.0",
+    "mongodb": "^4.0.0",
+    "mongoose": "^8.9.0",
+    "mongoose-auto-increment": "^5.0.1"
+  }
+}
